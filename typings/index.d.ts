@@ -1,11 +1,13 @@
 import { Message, CommandInteraction, CommandInteractionOption, ApplicationCommandType, Client, Collection } from "discord.js";
 
 export interface LoaderOptions {
-  commandsDir: string,
+  commandsDir: string
+  featuresDir?: string
   client: Client,
   slashes: boolean,
   commandPrefix: string
   ignoreBots: boolean
+
 }
 
 export class GotLoader {
@@ -34,4 +36,8 @@ export class Command {
   public description: string;
   public args: CommandInteractionOption[];
   public execute(data: CommandExecuteData);
+}
+
+export class Feature {
+  public constructor(execute: function(Client));
 }

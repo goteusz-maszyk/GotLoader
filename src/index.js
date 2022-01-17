@@ -14,7 +14,19 @@ class GotLoader {
     this.prefix = options.commandPrefix
     this.commands = new Collection()
     this.useSlashes = options.slashes
+    this.featuresDir = options.featuresDir
+
     const commandFiles = this.getAllFiles(options.commandsDir)
+
+    if(this.featuresDir) {
+      const featureFiles = this.getAllFiles(this.featuresDir)
+
+      for (const file of featureFiles) {
+        let feature = require(`${file[0]}`)
+
+        feature.execute(this.client)
+      }
+    }
 
     for (const file of commandFiles) {
       let command = require(`${file[0]}`)
@@ -63,3 +75,4 @@ module.exports = GotLoader
 
 module.exports.GotLoader = GotLoader
 module.exports.Command = require('./command')
+module.exports.Feature = require('./feature')

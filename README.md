@@ -15,5 +15,14 @@ GitHub
 npm install github:goteusz-maszyk/GotLoader
 ```
 
+# Features
+
+- Command handling
+- Type definitions (IDE autocomplete)
+- Feature handling
+
+More information on [wiki!](https://github.com/goteusz-maszyk/GotLoader/wiki)
+
 # Support & Feature Requests
 
+Just post an issue on github.
