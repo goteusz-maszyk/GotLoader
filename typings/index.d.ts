@@ -1,7 +1,7 @@
 import { Message, CommandInteraction, CommandInteractionOption, ApplicationCommandType, Client, Collection, ApplicationCommandOptionData, PermissionString } from "discord.js";
 
 export interface LoaderOptions {
-  commandsDir: string
+  commandsDir?: string
   featuresDir?: string
   client: Client,
   slashes: boolean,
@@ -23,12 +23,12 @@ export interface CommandExecuteData {
 }
 
 export interface CommandOptions {
-  public name: string;
-  public description: string;
-  public args: ApplicationCommandOptionData[];
-  public type: ApplicationCommandType;
-  public permissions: PermissionString[];
-  public execute(data: CommandExecuteData);
+  name: string;
+  description: string;
+  args: ApplicationCommandOptionData[];
+  type: ApplicationCommandType;
+  permissions: PermissionString[];
+  execute(data: CommandExecuteData);
 }
 
 export class Command {
@@ -41,5 +41,5 @@ export class Command {
 }
 
 export class Feature {
-  public constructor(execute: function(Client));
+  public constructor(execute: (arg0: Client) => any);
 }

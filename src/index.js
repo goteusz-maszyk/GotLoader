@@ -14,38 +14,42 @@ class GotLoader {
     this.commands = new Collection()
     this.useSlashes = options.slashes
     this.featuresDir = options.featuresDir
+    this.commandsDir = options.commandsDir
 
-    const commandFiles = this.getAllFiles(options.commandsDir)
-
+    
     if (this.featuresDir) {
       const featureFiles = this.getAllFiles(this.featuresDir)
 
       for (const file of featureFiles) {
         let feature = require(`${file[0]}`)
-
+        
         feature.execute(this.client)
       }
     }
+    
+    if(this.commandsDir) {
+      const commandFiles = this.getAllFiles(this.commandsDir)
 
-    for (const file of commandFiles) {
-      let command = require(`${file[0]}`)
-      let fileName = file[0].split("/")
-      fileName.shift()
-      fileName = fileName.join("/")
-      command.path = fileName
-      if (!command.name || !(typeof command.execute == 'function')) { console.log(`Error while registering command from ${file[0]}! No 'name' or 'execute()'`); continue }
-      this.commands.set(command.name, command)
-      if (this.useSlashes) {
-        options.client.application.commands.create({
-          name: command.name,
-          description: command.description,
-          type: command.type,
-          options: command.args
-        })
+      for (const file of commandFiles) {
+        let command = require(`${file[0]}`)
+        let fileName = file[0].split("/")
+        fileName.shift()
+        fileName = fileName.join("/")
+        command.path = fileName
+        if (!command.name || !(typeof command.execute == 'function')) { console.log(`Error while registering command from ${file[0]}! No 'name' or 'execute()'`); continue }
+        this.commands.set(command.name, command)
+        if (this.useSlashes) {
+          options.client.application.commands.create({
+            name: command.name,
+            description: command.description,
+            type: command.type,
+            options: command.args
+          })
+        }
       }
+      
+      commandHandler(this)
     }
-
-    commandHandler(this)
   }
 
   getAllFiles(dir) {
