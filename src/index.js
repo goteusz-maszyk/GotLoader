@@ -3,7 +3,6 @@
 const { Collection } = require("discord.js");
 const { readdirSync } = require('fs');
 const commandHandler = require("gotloader/src/commandHandler");
-const path = require('path')
 
 class GotLoader {
   /**
@@ -18,7 +17,7 @@ class GotLoader {
 
     const commandFiles = this.getAllFiles(options.commandsDir)
 
-    if(this.featuresDir) {
+    if (this.featuresDir) {
       const featureFiles = this.getAllFiles(this.featuresDir)
 
       for (const file of featureFiles) {
@@ -36,7 +35,7 @@ class GotLoader {
       command.path = fileName
       if (!command.name || !(typeof command.execute == 'function')) { console.log(`Error while registering command from ${file[0]}! No 'name' or 'execute()'`); continue }
       this.commands.set(command.name, command)
-      if(this.useSlashes) {
+      if (this.useSlashes) {
         options.client.application.commands.create({
           name: command.name,
           description: command.description,

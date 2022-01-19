@@ -1,4 +1,4 @@
-import { Message, CommandInteraction, CommandInteractionOption, ApplicationCommandType, Client, Collection, ApplicationCommandOptionData } from "discord.js";
+import { Message, CommandInteraction, CommandInteractionOption, ApplicationCommandType, Client, Collection, ApplicationCommandOptionData, PermissionString } from "discord.js";
 
 export interface LoaderOptions {
   commandsDir: string
@@ -27,6 +27,7 @@ export interface CommandOptions {
   public description: string;
   public args: ApplicationCommandOptionData[];
   public type: ApplicationCommandType;
+  public permissions: PermissionString[];
   public execute(data: CommandExecuteData);
 }
 
@@ -35,6 +36,7 @@ export class Command {
   public name: string;
   public description: string;
   public args: ApplicationCommandOptionData[];
+  public permissions: PermissionString[];
   public execute(data: CommandExecuteData);
 }
 

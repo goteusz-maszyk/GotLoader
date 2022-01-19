@@ -10,6 +10,7 @@ class Command {
     this.args = options.args
     this.execute = options.execute
     this.type = options.type
+    this.permissions = options.permissions
   }
 }
 
