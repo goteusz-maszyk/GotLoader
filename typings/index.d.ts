@@ -7,7 +7,8 @@ export interface LoaderOptions {
   slashes: boolean,
   commandPrefix: string
   ignoreBots: boolean
-
+  translationsDir?: string,
+  mongoURL?: string
 }
 
 export class GotLoader {

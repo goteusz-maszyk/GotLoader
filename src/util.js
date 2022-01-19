@@ -1,4 +1,5 @@
 const { MessageEmbed } = require("discord.js")
+const mongoose = require("mongoose")
 
 module.exports = {
   embed(content, color) {
@@ -6,5 +7,10 @@ module.exports = {
     embed.setColor(color || "ORANGE")
     embed.setDescription(content)
     return embed
+  },
+
+  async connectMongo(url) {
+    await mongoose.connect(url)
+    return mongoose
   }
 }

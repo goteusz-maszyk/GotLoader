@@ -1,13 +1,19 @@
 {
   "name": "gotloader",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "",
   "main": "./src/index.js",
-  "keywords": ["discordjs", "command handler", "discord", "commands"],
+  "keywords": [
+    "discordjs",
+    "command handler",
+    "discord",
+    "commands"
+  ],
   "author": "gotitim",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^13.3.1"
+    "discord.js": "^13.3.1",
+    "mongoose": "^6.1.7"
   },
   "files": [
     "typings",

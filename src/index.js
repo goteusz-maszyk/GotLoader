@@ -2,7 +2,7 @@
 
 const { Collection } = require("discord.js");
 const { readdirSync } = require('fs');
-const commandHandler = require("gotloader/src/commandHandler");
+const commandHandler = require("./commandHandler");
 
 class GotLoader {
   /**
