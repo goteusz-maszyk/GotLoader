@@ -4,6 +4,8 @@ const { Collection, Guild } = require("discord.js");
 const { readdirSync } = require('fs');
 const commandHandler = require("./commandHandler");
 const guildSchema = require('./guildSchema')
+const fs = require('fs')
+const { join } = require('path')
 
 class GotLoader {
   /**
@@ -79,9 +81,25 @@ class GotLoader {
    * @param {Guild} guild
    */
   async getGuildData(guild) {
-    const guildData = await guildSchema.findById(guild.id)
-
+    let guildData = await guildSchema.findById(guild.id) || {}
     return { prefix: guildData.prefix || this.prefix, lang: guildData.lang || this.lang }
+  }
+
+
+  /**
+   * @param {Guild} guild 
+   * @param {string} translation 
+   * @returns string or undefined
+   */
+  async translate(guild, translation) {
+    const guildData = await instance.getGuildData(guild)
+    let translations, defaultTranslations = require('./translations.json')
+
+    if (fs.existsSync(join(instance.translationsDir, guildData.lang))) {
+      translations = require(join(instance.translationsDir, guildData.lang))
+    }
+    
+    return (translations[translation] || defaultTranslations[translation])
   }
 }
 

@@ -1,4 +1,4 @@
-import { Message, CommandInteraction, CommandInteractionOption, ApplicationCommandType, Client, Collection, ApplicationCommandOptionData, PermissionString } from "discord.js";
+import { Message, CommandInteraction, CommandInteractionOption, ApplicationCommandType, Client, Collection, ApplicationCommandOptionData, PermissionString, Guild } from "discord.js";
 
 export interface LoaderOptions {
   commandsDir?: string
@@ -15,6 +15,7 @@ export class GotLoader {
   public constructor(options: LoaderOptions);
   public commands: Collection<string, Command>;
   commandsDir: string;
+  public translate(guild: Guild, code: string)
 }
 
 export interface CommandExecuteData {
@@ -26,9 +27,10 @@ export interface CommandExecuteData {
 export interface CommandOptions {
   name: string;
   description: string;
-  args: ApplicationCommandOptionData[];
-  type: ApplicationCommandType;
-  permissions: PermissionString[];
+  args?: ApplicationCommandOptionData[];
+  type?: ApplicationCommandType;
+  permissions?: PermissionString[];
+  usage?: string;
   execute(data: CommandExecuteData);
 }
 
@@ -38,6 +40,7 @@ export class Command {
   public description: string;
   public args: ApplicationCommandOptionData[];
   public permissions: PermissionString[];
+  public usage: string;
   public execute(data: CommandExecuteData);
 }
 

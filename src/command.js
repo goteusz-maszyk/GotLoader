@@ -11,6 +11,7 @@ class Command {
     this.execute = options.execute
     this.type = options.type
     this.permissions = options.permissions
+    this.usage = options.usage
   }
 }
 

@@ -1,5 +1,6 @@
 {
   "no_permission_to_execute": "You don't have permission to use this command!",
   "not_enough_args": "Please provide more arguments!",
-  "execute_error": ":x: An error occurred while executing this command."
+  "execute_error": ":x: An error occurred while executing this command.",
+  "usage_is": "Valid_usage: %usage%"
 }
