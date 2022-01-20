@@ -35,7 +35,12 @@ class GotLoader {
       const commandFiles = this.getAllFiles(this.commandsDir)
 
       for (const file of commandFiles) {
-        let command = require(`${file[0]}`)
+        let command
+        try {
+          require(file[0])
+        } catch (e) {
+          import(file[0])
+        }
         let fileName = file[0].split("/")
         fileName.shift()
         fileName = fileName.join("/")
