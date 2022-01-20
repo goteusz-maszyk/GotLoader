@@ -39,7 +39,7 @@ class GotLoader {
         try {
           require(file[0])
         } catch (e) {
-          import(file[0])
+          "file://" + import(file[0])
         }
         let fileName = file[0].split("/")
         fileName.shift()
