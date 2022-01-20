@@ -6,7 +6,7 @@ const reqString = {
 }
 
 const schema = new Schema({
-  guildID: reqString,
+  _id: reqString,
   prefix: String,
   lang: {
     type: String,

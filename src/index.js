@@ -1,8 +1,9 @@
 'use strict';
 
-const { Collection } = require("discord.js");
+const { Collection, Guild } = require("discord.js");
 const { readdirSync } = require('fs');
 const commandHandler = require("./commandHandler");
+const guildSchema = require('./guildSchema')
 
 class GotLoader {
   /**
@@ -15,6 +16,7 @@ class GotLoader {
     this.useSlashes = options.slashes
     this.featuresDir = options.featuresDir
     this.commandsDir = options.commandsDir
+    this.translationsDir = options.translationsDir
 
     
     if (this.featuresDir) {
@@ -72,6 +74,15 @@ class GotLoader {
 
     return jsFiles
   }
+
+  /**
+   * @param {Guild} guild
+   */
+  async getGuildData(guild) {
+    const guildData = await guildSchema.findById(guild.id)
+
+    return { prefix: guildData.prefix || this.prefix, lang: guildData.lang || this.lang }
+  }
 }
 
 module.exports = GotLoader
@@ -79,3 +90,4 @@ module.exports = GotLoader
 module.exports.GotLoader = GotLoader
 module.exports.Command = require('./command')
 module.exports.Feature = require('./feature')
+module.exports.guildSchema = guildSchema
