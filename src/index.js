@@ -37,9 +37,9 @@ class GotLoader {
       for (const file of commandFiles) {
         let command
         try {
-          require(file[0])
+          command = require(file[0])
         } catch (e) {
-          import("file://" + file[0])
+          command = import("file://" + file[0])
         }
         let fileName = file[0].split("/")
         fileName.shift()
