@@ -20,43 +20,20 @@ class GotLoader {
     this.commandsDir = options.commandsDir
     this.translationsDir = options.translationsDir
 
-    
+
     if (this.featuresDir) {
       const featureFiles = this.getAllFiles(this.featuresDir)
 
       for (const file of featureFiles) {
         let feature = require(`${file[0]}`)
-        
+
         feature.execute(this.client)
       }
     }
-    
-    if(this.commandsDir) {
-      const commandFiles = this.getAllFiles(this.commandsDir)
 
-      for (const file of commandFiles) {
-        let command
-        try {
-          command = require(file[0])
-        } catch (e) {
-          command = import("file://" + file[0])
-        }
-        let fileName = file[0].split("/")
-        fileName.shift()
-        fileName = fileName.join("/")
-        command.path = fileName
-        if (!command.name || !(typeof command.execute == 'function')) { console.log(`Error while registering command from ${file[0]}! No 'name' or 'execute()'`); continue }
-        this.commands.set(command.name, command)
-        if (this.useSlashes) {
-          options.client.application.commands.create({
-            name: command.name,
-            description: command.description,
-            type: command.type,
-            options: command.args
-          })
-        }
-      }
-      
+    if (this.commandsDir) {
+      this.loadCommands()
+
       commandHandler(this)
     }
   }
@@ -97,14 +74,42 @@ class GotLoader {
    * @returns string or undefined
    */
   async translate(guild, translation) {
-    const guildData = await instance.getGuildData(guild)
-    let translations, defaultTranslations = require('./translations.json')
+    const guildData = await this.getGuildData(guild)
+    let translations = require('./translations.json')
+    let defaultTranslations = require('./translations.json')
 
-    if (fs.existsSync(join(instance.translationsDir, guildData.lang))) {
-      translations = require(join(instance.translationsDir, guildData.lang))
+    if (this.translationsDir && fs.existsSync(join(this.translationsDir, guildData.lang))) {
+      translations = require(join(this.translationsDir, guildData.lang))
     }
-    
+
     return (translations[translation] || defaultTranslations[translation])
+  }
+
+  async loadCommands() {
+    const commandFiles = this.getAllFiles(this.commandsDir)
+
+    for (const file of commandFiles) {
+      let command
+      try {
+        command = require(file[0])
+      } catch (e) {
+        command = (await import("file://" + file[0])).default
+      }
+      let fileName = file[0].split("/")
+      fileName.shift()
+      fileName = fileName.join("/")
+      command.path = fileName
+      if (!command.name || !(typeof command.execute == 'function')) { console.log(`Error while registering command from ${file[0]}! No 'name' or 'execute()'`); continue }
+      this.commands.set(command.name, command)
+      if (this.useSlashes) {
+        options.client.application.commands.create({
+          name: command.name,
+          description: command.description,
+          type: command.type,
+          options: command.args
+        })
+      }
+    }
   }
 }
 

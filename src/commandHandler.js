@@ -8,13 +8,13 @@ module.exports = (instance) => {
    * @param {GuildMember} member 
    * @param {string[]} args
    */
-  const canRun = async(command, member, args) => {
-    if (!member.permissions.has(command.permissions)) {
+  const canRun = async (command, member, args) => {
+    if (command.permissions && !member.permissions.has(command.permissions)) {
       return await instance.translate(member.guild, "no_permission_to_execute")
     }
 
-    if (args && (args.length < command.args.filter(element => element.required == true).length)) {
-      return await instance.translate(member.guild, "no_permission_to_execute")
+    if (command.args && args && (args.length < command.args.filter(element => element.required == true).length)) {
+      return await instance.translate(member.guild, "not_enough_args") + (command.usage ? "\n" + (await instance.translate(member.guild, "usage_is")).replace('%usage%', command.usage) : "")
     }
 
     return false
@@ -36,8 +36,9 @@ module.exports = (instance) => {
     commandName = commandName.toLowerCase()
 
     const command = instance.commands.get(commandName)
+    if (!command) return
 
-    const runError = canRun(command, msg.member, args)
+    const runError = await canRun(command, msg.member, args)
 
     if (runError) {
       msg.reply({ embeds: [embed(runError)] })
@@ -52,7 +53,7 @@ module.exports = (instance) => {
     try {
       command.execute(executeData)
     } catch (e) {
-      msg.reply(await instance.translate(guild, "execute_error") + await instance.translate(guild, "usage_is").replace('%usage%', command.usage))
+      msg.reply(await instance.translate(guild, "execute_error"))
       console.error(e)
     }
   })
@@ -71,7 +72,7 @@ module.exports = (instance) => {
       args.push(String(value))
     })
 
-    const runError = canRun(command, msg.member)
+    const runError = await canRun(command, msg.member)
 
     if (runError) {
       itr.editReply({ embeds: [embed(runError)] })
@@ -88,7 +89,7 @@ module.exports = (instance) => {
       await itr.deferReply({ ephemeral: true })
       command.execute(executeData)
     } catch (e) {
-      msg.reply(await instance.translate(guild, "execute_error") + await instance.translate(guild, "usage_is").replace('%usage%', command.usage))
+      msg.reply(await instance.translate(guild, "execute_error"))
       console.error(e)
     }
   })
