@@ -46,7 +46,7 @@ class GotLoader {
 
     for (const file of files) {
       if (file.isDirectory()) {
-        jsFiles = [...jsFiles, ...helpers.getAllFiles(`${dir}/${file.name}`)]
+        jsFiles = [...jsFiles, ...this.getAllFiles(`${dir}/${file.name}`)]
       } else {
         let fileName = file.name.replace(/\\/g, '/').split('/')
         fileName = fileName[fileName.length - 1]
